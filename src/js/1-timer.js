@@ -28,7 +28,8 @@ const options = {
     if (selectedDate <= new Date()) {
       iziToast.error({
         title: 'Error',
-        message: 'Please choose a date in the future',
+          message: 'Please choose a date in the future',
+        position: 'topCenter'
       });
       startButton.disabled = true; // Кнопка неактивна, якщо вибрана дата у минулому
     } else {
