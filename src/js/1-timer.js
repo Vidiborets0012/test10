@@ -6,8 +6,6 @@ import "izitoast/dist/css/iziToast.min.css";  // імпорт стилів дл�
 
 // Отримуємо елементи з DOM
 const startButton = document.querySelector('button[data-start]');
-startButton.disabled = true; // Кнопка неактивна спочатку
-
 const daysEl = document.querySelector('[data-days]');
 const hoursEl = document.querySelector('[data-hours]');
 const minutesEl = document.querySelector('[data-minutes]');
@@ -16,6 +14,8 @@ const secondsEl = document.querySelector('[data-seconds]');
 // Змінні для обраної дати і таймера
 let userSelectedDate = null;
 let timerId = null;
+
+startButton.disabled = true; // Кнопка неактивна спочатку
 
 // Налаштування для flatpickr
 const options = {
@@ -60,22 +60,27 @@ function updateCountdown() {
     clearInterval(timerId); // Зупинка таймера
     document.querySelector('#datetime-picker').disabled = false; // Активується інпут для нової дати
     startButton.disabled = true; // Кнопка залишається неактивною
-    daysEl.textContent = '00';
-    hoursEl.textContent = '00';
-    minutesEl.textContent = '00';
-    secondsEl.textContent = '00';
+    updateInterface(0, 0, 0, 0); // Відображення 00:00:00:00  
+    // daysEl.textContent = '00';
+    // hoursEl.textContent = '00';
+    // minutesEl.textContent = '00';
+    // secondsEl.textContent = '00';
     return;
   }
 
   // Конвертуємо мілісекунди в дні, години, хвилини і секунди
-  const { days, hours, minutes, seconds } = convertMs(timeLeft);
-
-  // Оновлюємо інтерфейс
+    const { days, hours, minutes, seconds } = convertMs(timeLeft);
+    updateInterface(days, hours, minutes, seconds);
+}
+// Оновлюємо інтерфейс
+function updateInterface(days, hours, minutes, seconds) {
   daysEl.textContent = addLeadingZero(days);
   hoursEl.textContent = addLeadingZero(hours);
   minutesEl.textContent = addLeadingZero(minutes);
   secondsEl.textContent = addLeadingZero(seconds);
 }
+
+
 
 // Функція для конвертації мілісекунд
 function convertMs(ms) {
