@@ -6,6 +6,8 @@ import "izitoast/dist/css/iziToast.min.css";  // імпорт стилів дл�
 
 // Отримуємо елементи з DOM
 const startButton = document.querySelector('button[data-start]');
+startButton.disabled = true; // Кнопка неактивна спочатку
+
 const daysEl = document.querySelector('[data-days]');
 const hoursEl = document.querySelector('[data-hours]');
 const minutesEl = document.querySelector('[data-minutes]');
@@ -28,10 +30,10 @@ const options = {
         title: 'Error',
         message: 'Please choose a date in the future',
       });
-      startButton.disabled = true;
+      startButton.disabled = true; // Кнопка неактивна, якщо вибрана дата у минулому
     } else {
       userSelectedDate = selectedDate;
-      startButton.disabled = false;
+      startButton.disabled = false; // Кнопка активується, якщо вибрана дата в майбутньому
     }
   },
 };
@@ -43,21 +45,21 @@ flatpickr("#datetime-picker", options);
 startButton.addEventListener('click', () => {
   if (!userSelectedDate) return;
 
-  startButton.disabled = true;
-  document.querySelector('#datetime-picker').disabled = true;
-  timerId = setInterval(updateCountdown, 1000);
+  startButton.disabled = true; // Деактивація кнопки після старту
+  document.querySelector('#datetime-picker').disabled = true; // Деактивація інпуту після старту
+  timerId = setInterval(updateCountdown, 1000); // Запуск таймера
 });
 
 // Функція для оновлення таймера
 function updateCountdown() {
-  const now = new Date().getTime(); // Отримуємо поточний час у мілісекундах
-  const timeLeft = userSelectedDate.getTime() - now; // Обчислюємо різницю
+  const now = new Date(); // Отримуємо поточний час у мілісекундах
+  const timeLeft = userSelectedDate - now; // Обчислюємо різницю
 
   // Перевірка на завершення таймера
   if (timeLeft <= 0) {
-    clearInterval(timerId);
-    document.querySelector('#datetime-picker').disabled = false;
-    startButton.disabled = true;
+    clearInterval(timerId); // Зупинка таймера
+    document.querySelector('#datetime-picker').disabled = false; // Активується інпут для нової дати
+    startButton.disabled = true; // Кнопка залишається неактивною
     daysEl.textContent = '00';
     hoursEl.textContent = '00';
     minutesEl.textContent = '00';
